@@ -13,11 +13,21 @@
     </form>
 
     <script>
-        document.getElementById("userForm").addEventListener("submit", function(event) {
+        document.getElementById("userForm").addEventListener("submit", async function(event) {
             event.preventDefault();
+            
             let formData = new FormData(event.target);
+            let password = formData.get("password");
 
-            fetch("https://script.google.com/macros/s/AKfycbwVTGY0CPLiajhcqhPZSphQJncxmE-kVoGUxDieLZR02VkBHvg4ob4NnSE6Atfk0Kf_/exec", {
+            // ⚠️ Hash the password using SHA-256
+            let hashBuffer = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(password));
+            let hashArray = Array.from(new Uint8Array(hashBuffer));
+            let hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+            // Replace password with hashed version
+            formData.set("password", hashedPassword);
+
+            fetch("https://script.google.com/macros/s/AKfycbwWmVv8EmAtw_BLT3uDmCPLB_-3-09mRG2E76adYXvTyvKJ-5yEQ79NmRD0ffaTAmdW/exec", {
                 method: "POST",
                 body: formData
             })
