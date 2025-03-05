@@ -24,15 +24,18 @@
                 password: document.getElementById("password").value
             };
 
-            fetch("https://script.google.com/macros/s/AKfycbz3lOqugmm5giG0rfOED5SlQadr0SUCm3wTlaV2Y3DzYH4UXLqib2WRUleX-tgjwplCgw/exec", {  // یہاں Web App URL لگائیں
+            fetch("https://script.google.com/macros/s/AKfycbx_dldLXF-SF5A0ISTQ4haCvB-v7BiuGaSD_2qID21I81xGCnNrgJR11Hj975eTQCkg9A/exec", {  // 🔹 نیا Web App URL یہاں لگائیں
                 method: "POST",
                 body: JSON.stringify(formData),
                 headers: {
                     "Content-Type": "application/json"
                 }
             })
-            .then(response => response.text())
-            .then(data => alert(data))
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);  // کامیابی کا پیغام
+                document.getElementById("registerForm").reset();  // فارم صاف کریں
+            })
             .catch(error => console.error('Error:', error));
         });
     </script>
